@@ -68,4 +68,4 @@ document.addEventListener('keydown', event => {
     }
 });
 
-setInterval(update, 100); // Game loop
+setInterval(update, 100); // Game loop: call to the `update` function every 100 milliseconds (10 times per second).
