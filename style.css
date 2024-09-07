@@ -6,9 +6,50 @@ body {
     height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #000000;
+    background-color: #0e0d0d;
+}
+
+h1 {
+    color: rgba(12, 231, 194, 0.732);
 }
 
 canvas {
-    border: 4px solid rgba(54, 195, 205, 0.711);
+    border: 4px solid rgba(42, 208, 205, 0.701);
+}
+
+.game-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+#game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid green;
+    background-color: rgba(63, 232, 207, 0.826);
+    padding: 20px;
+    text-align: center;
+    display: none; /* Hidden until the game ends */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+    background-size: 200%; /* Make background larger to animate */
+    background-position: left; /* Start position */
+    background-image: linear-gradient(45deg, #f39c12, #f1c40f, #e74c3c); /* Initial gradient */
+    border: none;
+    border-radius: 5px;
+    transition: background-position 0.3s ease-in-out, box-shadow 1.5s ease-in-out;
+}
+
+/* Hover effect to smoothly shift the gradient */
+button:hover {
+    background-position: calc(100% - 1%) center; /* Change background position */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Glow effect */
 }

@@ -8,7 +8,16 @@
 </head>
 <body>
     <h1>Snake Game</h1>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        
+        <!-- Score and Play Again button -->
+        <div id="game-over" style="display: none;">
+            <h2 id="final-score"></h2>
+            <button id="play-again" onclick="resetGame()">Play Again?</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

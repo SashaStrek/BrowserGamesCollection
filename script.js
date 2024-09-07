@@ -1,14 +1,28 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+const gameOverDiv = document.getElementById('game-over');
+const finalScore = document.getElementById('final-score');
+const playAgainButton = document.getElementById('play-again');
+
 const boxSize = 20; // Snake and food size
 const rows = canvas.height / boxSize;
 const cols = canvas.width / boxSize;
 
-let snake = [{ x: 9 * boxSize, y: 10 * boxSize }];
-let direction = { x: 0, y: 0 };
-let food = { x: Math.floor(Math.random() * cols) * boxSize, y: Math.floor(Math.random() * rows) * boxSize };
-let score = 0;
+let snake, direction, food, score, gameInterval;
+
+function initGame() {
+    snake = [{ x: 9 * boxSize, y: 10 * boxSize }];
+    direction = { x: 0, y: 0 };
+    food = { x: Math.floor(Math.random() * cols) * boxSize, y: Math.floor(Math.random() * rows) * boxSize };
+    score = 0;
+
+    // Hide the game-over screen and button
+    gameOverDiv.style.display = 'none';
+
+    // Start the game loop
+    gameInterval = setInterval(update, 100);
+}
 
 function drawSnake() {
     snake.forEach(part => {
@@ -40,10 +54,14 @@ function moveSnake() {
 
 function checkCollision() {
     const head = snake[0];
+
     // Check if the snake hits the walls or itself
     if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height || snake.slice(1).some(part => part.x === head.x && part.y === head.y)) {
-        alert(`Game Over! Your score: ${score}`);
-        document.location.reload();
+        clearInterval(gameInterval); // Stop the game loop
+
+        // Show the game-over screen with the final score
+        finalScore.textContent = `Game Over! Your score: ${score}`;
+        gameOverDiv.style.display = 'block';
     }
 }
 
@@ -53,6 +71,11 @@ function update() {
     drawFood();
     moveSnake();
     checkCollision();
+}
+
+// Restart the game when "Play Again" button is clicked
+function resetGame() {
+    initGame();
 }
 
 // Keyboard controls
@@ -68,4 +91,5 @@ document.addEventListener('keydown', event => {
     }
 });
 
-setInterval(update, 100); // Game loop: call to the `update` function every 100 milliseconds (10 times per second).
+// Initialize the game for the first time
+initGame();
