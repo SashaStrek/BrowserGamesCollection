@@ -102,6 +102,16 @@ function resetGame() {
     initGame();
 }
 
+// Prevent scrolling on touch events
+function preventScroll(event) {
+    event.preventDefault();
+}
+
+// Touch controls for mobile devices
+canvas.addEventListener('touchstart', preventScroll, { passive: false });
+canvas.addEventListener('touchmove', preventScroll, { passive: false });
+canvas.addEventListener('touchend', preventScroll, { passive: false });
+
 // Keyboard controls
 document.addEventListener('keydown', event => {
     if (event.code === 'ArrowUp' && direction.y === 0) {
