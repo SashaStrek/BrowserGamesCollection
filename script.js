@@ -5,19 +5,38 @@ const gameOverDiv = document.getElementById('game-over');
 const finalScore = document.getElementById('final-score');
 const playAgainButton = document.getElementById('play-again');
 
+// Dynamically adjust canvas size to fit small screens while maintaining 400x400 on larger screens
+function adjustCanvasSize() {
+    const screenWidth = window.innerWidth;
+    
+    // Keep 400x400 size on larger screens, adjust for smaller screens
+    if (screenWidth < 420) {
+        const canvasSize = screenWidth - 20;  // 20px padding for small screens
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+    } else {
+        canvas.width = 400;
+        canvas.height = 400;
+    }
+}
+
+// Initial canvas size adjustment
+adjustCanvasSize();
+
+// Re-adjust the canvas size if the window is resized
+window.addEventListener('resize', adjustCanvasSize);
+
 const boxSize = 20; // Snake and food size
-const rows = canvas.height / boxSize;
-const cols = canvas.width / boxSize;
+let rows = canvas.height / boxSize;
+let cols = canvas.width / boxSize;
 
 let snake, direction, food, score, gameInterval;
 
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
-
 function initGame() {
-    snake = [{ x: 9 * boxSize, y: 10 * boxSize }];
+    rows = canvas.height / boxSize;
+    cols = canvas.width / boxSize;
+
+    snake = [{ x: Math.floor(cols / 2) * boxSize, y: Math.floor(rows / 2) * boxSize }];
     direction = { x: 0, y: 0 };
     food = { x: Math.floor(Math.random() * cols) * boxSize, y: Math.floor(Math.random() * rows) * boxSize };
     score = 0;
@@ -95,48 +114,6 @@ document.addEventListener('keydown', event => {
         direction = { x: 1, y: 0 };
     }
 });
-
-// Touch controls for mobile devices
-canvas.addEventListener('touchstart', handleTouchStart, false);
-canvas.addEventListener('touchmove', handleTouchMove, false);
-canvas.addEventListener('touchend', handleTouchEnd, false);
-
-function handleTouchStart(event) {
-    const firstTouch = event.touches[0];
-    touchStartX = firstTouch.clientX;
-    touchStartY = firstTouch.clientY;
-}
-
-function handleTouchMove(event) {
-    const touch = event.touches[0];
-    touchEndX = touch.clientX;
-    touchEndY = touch.clientY;
-}
-
-function handleTouchEnd() {
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        // Horizontal swipe
-        if (deltaX > 0 && direction.x === 0) {
-            // Swipe right
-            direction = { x: 1, y: 0 };
-        } else if (deltaX < 0 && direction.x === 0) {
-            // Swipe left
-            direction = { x: -1, y: 0 };
-        }
-    } else {
-        // Vertical swipe
-        if (deltaY > 0 && direction.y === 0) {
-            // Swipe down
-            direction = { x: 0, y: 1 };
-        } else if (deltaY < 0 && direction.y === 0) {
-            // Swipe up
-            direction = { x: 0, y: -1 };
-        }
-    }
-}
 
 // Initialize the game for the first time
 initGame();
