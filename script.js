@@ -102,60 +102,41 @@ function resetGame() {
     initGame();
 }
 
-// Swipe controls for mobile devices
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
+// Directional button handlers
+function moveUp() {
+    if (direction.y === 0) {
+        direction = { x: 0, y: -1 };
+    }
+}
 
-canvas.addEventListener('touchstart', function(event) {
-    const touch = event.touches[0];
-    touchStartX = touch.clientX;
-    touchStartY = touch.clientY;
-}, { passive: false });
+function moveDown() {
+    if (direction.y === 0) {
+        direction = { x: 0, y: 1 };
+    }
+}
 
-canvas.addEventListener('touchend', function(event) {
-    touchEndX = event.changedTouches[0].clientX;
-    touchEndY = event.changedTouches[0].clientY;
+function moveLeft() {
+    if (direction.x === 0) {
+        direction = { x: -1, y: 0 };
+    }
+}
 
-    handleSwipe();
-}, { passive: false });
-
-function handleSwipe() {
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        // Horizontal swipe
-        if (deltaX > 0 && direction.x === 0) {
-            // Swipe right
-            direction = { x: 1, y: 0 };
-        } else if (deltaX < 0 && direction.x === 0) {
-            // Swipe left
-            direction = { x: -1, y: 0 };
-        }
-    } else {
-        // Vertical swipe
-        if (deltaY > 0 && direction.y === 0) {
-            // Swipe down
-            direction = { x: 0, y: 1 };
-        } else if (deltaY < 0 && direction.y === 0) {
-            // Swipe up
-            direction = { x: 0, y: -1 };
-        }
+function moveRight() {
+    if (direction.x === 0) {
+        direction = { x: 1, y: 0 };
     }
 }
 
 // Keyboard controls for desktop users
 document.addEventListener('keydown', event => {
     if (event.code === 'ArrowUp' && direction.y === 0) {
-        direction = { x: 0, y: -1 };
+        moveUp();
     } else if (event.code === 'ArrowDown' && direction.y === 0) {
-        direction = { x: 0, y: 1 };
+        moveDown();
     } else if (event.code === 'ArrowLeft' && direction.x === 0) {
-        direction = { x: -1, y: 0 };
+        moveLeft();
     } else if (event.code === 'ArrowRight' && direction.x === 0) {
-        direction = { x: 1, y: 0 };
+        moveRight();
     }
 });
 

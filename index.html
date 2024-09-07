@@ -11,10 +11,20 @@
     <div class="game-container">
         <canvas id="gameCanvas" width="400" height="400"></canvas>
         
-        <!-- Score and Play Again button -->
+        <!-- Game Over Screen -->
         <div id="game-over" style="display: none;">
             <h2 id="final-score"></h2>
-            <button id="play-again" onclick="resetGame()">Play Again?</button>
+            <button id="play-again" onclick="resetGame()">Play Again</button>
+        </div>
+
+        <!-- Directional Buttons for Mobile Users -->
+        <div class="controls">
+            <button onclick="moveUp()">Up</button>
+            <div class="horizontal-buttons">
+                <button onclick="moveLeft()">Left</button>
+                <button onclick="moveRight()">Right</button>
+            </div>
+            <button onclick="moveDown()">Down</button>
         </div>
     </div>
 
