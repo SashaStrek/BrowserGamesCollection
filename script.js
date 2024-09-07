@@ -102,17 +102,51 @@ function resetGame() {
     initGame();
 }
 
-// Prevent scrolling on touch events
-function preventScroll(event) {
-    event.preventDefault();
+// Swipe controls for mobile devices
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+canvas.addEventListener('touchstart', function(event) {
+    const touch = event.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+}, { passive: false });
+
+canvas.addEventListener('touchend', function(event) {
+    touchEndX = event.changedTouches[0].clientX;
+    touchEndY = event.changedTouches[0].clientY;
+
+    handleSwipe();
+}, { passive: false });
+
+function handleSwipe() {
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Horizontal swipe
+        if (deltaX > 0 && direction.x === 0) {
+            // Swipe right
+            direction = { x: 1, y: 0 };
+        } else if (deltaX < 0 && direction.x === 0) {
+            // Swipe left
+            direction = { x: -1, y: 0 };
+        }
+    } else {
+        // Vertical swipe
+        if (deltaY > 0 && direction.y === 0) {
+            // Swipe down
+            direction = { x: 0, y: 1 };
+        } else if (deltaY < 0 && direction.y === 0) {
+            // Swipe up
+            direction = { x: 0, y: -1 };
+        }
+    }
 }
 
-// Touch controls for mobile devices
-canvas.addEventListener('touchstart', preventScroll, { passive: false });
-canvas.addEventListener('touchmove', preventScroll, { passive: false });
-canvas.addEventListener('touchend', preventScroll, { passive: false });
-
-// Keyboard controls
+// Keyboard controls for desktop users
 document.addEventListener('keydown', event => {
     if (event.code === 'ArrowUp' && direction.y === 0) {
         direction = { x: 0, y: -1 };
