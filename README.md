@@ -1,1 +1,3 @@
 # BrowserGamesCollection
+
+Enjoy the SnakeGame!
