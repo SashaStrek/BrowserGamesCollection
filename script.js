@@ -84,7 +84,7 @@ function checkCollision() {
         clearInterval(gameInterval); // Stop the game loop
 
         // Show the game-over screen with the final score
-        finalScore.textContent = `Game Over! Your score: ${score}`;
+        finalScore.innerHTML = `Game Over! <span class="score-label">Your score:</span> <span class="score-value">${score}</span>`;
         gameOverDiv.style.display = 'block';
     }
 }

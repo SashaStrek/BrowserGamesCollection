@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1>Snake Game</h1>
     <div class="game-container">
         <canvas id="gameCanvas" width="400" height="400"></canvas>
-        
+
         <!-- Game Over Screen -->
         <div id="game-over" style="display: none;">
             <h2 id="final-score"></h2>
@@ -19,15 +21,16 @@
 
         <!-- Directional Buttons for Mobile Users -->
         <div class="controls">
-            <button onclick="moveUp()">Up</button>
+            <button onclick="moveUp()">&#8593;</button> <!-- Up Arrow -->
             <div class="horizontal-buttons">
-                <button onclick="moveLeft()">Left</button>
-                <button onclick="moveRight()">Right</button>
+                <button onclick="moveLeft()">&#8592;</button> <!-- Left Arrow -->
+                <button onclick="moveDown()">&#8595;</button> <!-- Down Arrow -->
+                <button onclick="moveRight()">&#8594;</button> <!-- Right Arrow -->
             </div>
-            <button onclick="moveDown()">Down</button>
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>
