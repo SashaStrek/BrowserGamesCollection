@@ -11,7 +11,7 @@ function adjustCanvasSize() {
     
     // Keep 400x400 size on larger screens, adjust for smaller screens
     if (screenWidth < 420) {
-        const canvasSize = screenWidth - 40;  // 40px padding for small screens
+        const canvasSize = screenWidth - 40;
         canvas.width = canvasSize;
         canvas.height = canvasSize;
     } else {
@@ -30,7 +30,7 @@ const boxSize = 20; // Snake and food size
 let rows = canvas.height / boxSize;
 let cols = canvas.width / boxSize;
 
-let snake, direction, food, score, gameInterval;
+let snake, direction, nextDirection, food, score, gameInterval;
 
 function initGame() {
     rows = canvas.height / boxSize;
@@ -38,6 +38,7 @@ function initGame() {
 
     snake = [{ x: Math.floor(cols / 2) * boxSize, y: Math.floor(rows / 2) * boxSize }];
     direction = { x: 0, y: 0 };
+    nextDirection = direction;
     food = { x: Math.floor(Math.random() * cols) * boxSize, y: Math.floor(Math.random() * rows) * boxSize };
     score = 0;
 
@@ -62,11 +63,36 @@ function drawFood() {
     ctx.fillRect(food.x, food.y, boxSize, boxSize);
 }
 
+function checkCollision(nextX, nextY) {
+    // Check if the next position is outside the canvas or hits the snake's body
+    if (nextX < 0 || nextX >= canvas.width || nextY < 0 || nextY >= canvas.height || snake.slice(1).some(part => part.x === nextX && part.y === nextY)) {
+        clearInterval(gameInterval); // Stop the game loop
+
+        // Show the game-over screen with the final score
+        finalScore.innerHTML = `Game Over! <span class="score-label">Your score:</span> <span class="score-value">${score}</span>`;
+        gameOverDiv.style.display = 'block';
+        return true; // Return true to indicate collision occurred
+    }
+    return false; // Return false to indicate no collision
+}
+
 function moveSnake() {
-    const head = { x: snake[0].x + direction.x * boxSize, y: snake[0].y + direction.y * boxSize };
-    
+    // Update direction with the next direction before moving
+    direction = nextDirection;
+
+    // Calculate the next position of the snake's head
+    const nextX = snake[0].x + direction.x * boxSize;
+    const nextY = snake[0].y + direction.y * boxSize;
+
+    // Check for collisions before actually moving the snake
+    if (checkCollision(nextX, nextY)) {
+        return; // Exit if collision is detected
+    }
+
+    // Now move the snake after collision check
+    const head = { x: nextX, y: nextY };
     snake.unshift(head);
-    
+
     // Check if the snake eats the food
     if (head.x === food.x && head.y === food.y) {
         score++;
@@ -76,17 +102,29 @@ function moveSnake() {
     }
 }
 
-function checkCollision() {
-    const head = snake[0];
-
-    // Check if the snake hits the walls or itself
-    if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height || snake.slice(1).some(part => part.x === head.x && part.y === head.y)) {
-        clearInterval(gameInterval); // Stop the game loop
-
-        // Show the game-over screen with the final score
-        finalScore.innerHTML = `Game Over! <span class="score-label">Your score:</span> <span class="score-value">${score}</span>`;
-        gameOverDiv.style.display = 'block';
+// Prevent reversing into itself by updating nextDirection
+function setDirection(newDirection) {
+    if (newDirection.x === -direction.x && newDirection.y === -direction.y) {
+        return; // Prevent moving in the opposite direction
     }
+    nextDirection = newDirection; // Update direction only if it's valid
+}
+
+// Directional button handlers
+function moveUp() {
+    setDirection({ x: 0, y: -1 });
+}
+
+function moveDown() {
+    setDirection({ x: 0, y: 1 });
+}
+
+function moveLeft() {
+    setDirection({ x: -1, y: 0 });
+}
+
+function moveRight() {
+    setDirection({ x: 1, y: 0 });
 }
 
 function update() {
@@ -94,7 +132,6 @@ function update() {
     drawSnake();
     drawFood();
     moveSnake();
-    checkCollision();
 }
 
 // Restart the game when "Play Again" button is clicked
@@ -102,40 +139,15 @@ function resetGame() {
     initGame();
 }
 
-// Directional button handlers
-function moveUp() {
-    if (direction.y === 0) {
-        direction = { x: 0, y: -1 };
-    }
-}
-
-function moveDown() {
-    if (direction.y === 0) {
-        direction = { x: 0, y: 1 };
-    }
-}
-
-function moveLeft() {
-    if (direction.x === 0) {
-        direction = { x: -1, y: 0 };
-    }
-}
-
-function moveRight() {
-    if (direction.x === 0) {
-        direction = { x: 1, y: 0 };
-    }
-}
-
 // Keyboard controls for desktop users
 document.addEventListener('keydown', event => {
-    if (event.code === 'ArrowUp' && direction.y === 0) {
+    if (event.code === 'ArrowUp') {
         moveUp();
-    } else if (event.code === 'ArrowDown' && direction.y === 0) {
+    } else if (event.code === 'ArrowDown') {
         moveDown();
-    } else if (event.code === 'ArrowLeft' && direction.x === 0) {
+    } else if (event.code === 'ArrowLeft') {
         moveLeft();
-    } else if (event.code === 'ArrowRight' && direction.x === 0) {
+    } else if (event.code === 'ArrowRight') {
         moveRight();
     }
 });
