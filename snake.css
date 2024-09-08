@@ -31,6 +31,9 @@ canvas {
     padding: 10px;
     text-align: center;
     display: none;
+    width: 80%;
+    max-width: 400px;
+    white-space: nowrap;
 }
 
 button {
@@ -73,7 +76,7 @@ button {
 }
 
 .score-label {
-    color: rgba(217, 43, 226, 0.646); /* Purple color for "Your score:" */
+    color: rgba(217, 43, 226, 0.646);
 }
 
 .score-value {
