@@ -11,7 +11,7 @@ function adjustCanvasSize() {
     
     // Keep 400x400 size on larger screens, adjust for smaller screens
     if (screenWidth < 420) {
-        const canvasSize = screenWidth - 20;  // 20px padding for small screens
+        const canvasSize = screenWidth - 40;  // 40px padding for small screens
         canvas.width = canvasSize;
         canvas.height = canvasSize;
     } else {
