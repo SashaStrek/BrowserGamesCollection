@@ -47,11 +47,12 @@ button {
     font-size: large;
     font-weight: bold;
     padding: 10px 20px;
+    
     border: none;
     /* border-radius: 5px; */
     color: #ffd700;
     cursor: pointer;
-    transition: background-color 0.4s ease, transform 0.4s ease; /* Smooth transition for background color and scaling */
+    transition: background-color 0.3s ease, transform 0.4s ease; /* Smooth transition for background color and scaling */
 }
 
 #play-again:hover {
