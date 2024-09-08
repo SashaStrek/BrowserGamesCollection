@@ -69,7 +69,7 @@ function checkCollision(nextX, nextY) {
         clearInterval(gameInterval); // Stop the game loop
 
         // Show the game-over screen with the final score
-        finalScore.innerHTML = `Game Over! <span class="score-label">Your score:</span> <span class="score-value">${score}</span>`;
+        finalScore.innerHTML = `Game Over!<br> <span class="score-label">Your score:</span> <span class="score-value">${score}</span>`;
         gameOverDiv.style.display = 'block';
         return true; // Return true to indicate collision occurred
     }
